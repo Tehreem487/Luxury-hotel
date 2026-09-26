@@ -170,24 +170,38 @@
 </div>
 
 <div class="video-modal" id="videoModal">
-  <button type="button" onclick="closeVideo()" aria-label="Close video">
+
+  <button
+    type="button"
+    class="video-close"
+    onclick="closeVideo()"
+    aria-label="Close video"
+  >
     ×
   </button>
 
   <div class="video-wrapper">
+
     <video
       id="restaurantVideo"
       class="restaurant-video"
       controls
       playsinline
+      webkit-playsinline
       muted
       loop
-      preload="metadata"
+      preload="auto"
     >
-      <source src="./videos/restaurant.mp4" type="video/mp4">
+      <source
+        src="./videos/restaurant.mp4"
+        type="video/mp4"
+      >
+
       Your browser does not support the video tag.
     </video>
+
   </div>
+
 </div>
 
 <script src="./script.js"></script>
