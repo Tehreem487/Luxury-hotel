@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURELIA — Luxury Dining Experience</title>
+<meta name="description" content="AURELIA — an immersive luxury restaurant website concept.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-mark">A</div>
+  <div class="loader-name">AURELIA</div>
+  <div class="loader-bar"><span></span></div>
+</div>
+
+<header class="header">
+  <a class="brand" href="#home">AURELIA <small>DINING HOUSE</small></a>
+  <nav class="desktop-nav">
+    <a href="#home">HOME</a>
+    <a href="#menu">MENU</a>
+    <a href="#experience">EXPERIENCE</a>
+    <a href="#private">PRIVATE DINING</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+  <div class="header-actions">
+    <button class="reserve-outline" onclick="openReservation()">RESERVATION</button>
+    <button class="menu-toggle" onclick="toggleMobile()">☰</button>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#home" onclick="toggleMobile()">HOME</a>
+  <a href="#menu" onclick="toggleMobile()">MENU</a>
+  <a href="#experience" onclick="toggleMobile()">EXPERIENCE</a>
+  <a href="#private" onclick="toggleMobile()">PRIVATE DINING</a>
+  <a href="#about" onclick="toggleMobile()">ABOUT</a>
+  <a href="#contact" onclick="toggleMobile()">CONTACT</a>
+  <button onclick="openReservation()">RESERVATION</button>
+</div>
+
+<main id="home">
+<section class="hero">
+  <div class="hero-image" id="heroImage"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content reveal">
+    <p class="eyebrow">CONTEMPORARY DINING · ISLAMABAD</p>
+    <h1>An Epitome of<br><em>Modern Luxury</em></h1>
+    <p class="hero-sub">An intimate dining experience where exceptional food, refined service and unforgettable moments meet.</p>
+    <div class="hero-buttons">
+      <a class="gold-btn" href="#menu">Explore the Menu <span>↗</span></a>
+      <a class="ghost-btn" href="#experience">Discover Experience</a>
+    </div>
+  </div>
+  <div class="awards">
+    <span>✦ ✦ ✦ ✦</span>
+    <b>CURATED DINING</b>
+    <i>•</i>
+    <b>SEASONAL CUISINE</b>
+    <i>•</i>
+    <b>FINE HOSPITALITY</b>
+  </div>
+</section>
+
+<section class="promise">
+  <div><span class="icon">◈</span><h3>INTIMATE DINING ROOM</h3><p>18 seats · bespoke tasting menu</p></div>
+  <div><span class="icon">◇</span><h3>PRIVATE DINING</h3><p>Exclusive space for up to 12 guests</p></div>
+  <div><span class="icon">♧</span><h3>SEASONALLY SOURCED</h3><p>Local produce · curated ingredients</p></div>
+  <div class="scroll-label">SCROLL TO DISCOVER <span>↓</span></div>
+</section>
+
+<section class="story" id="about">
+  <div class="story-image reveal"><img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=90" alt="Elegant plated dish"></div>
+  <div class="story-copy reveal">
+    <p class="eyebrow">THE AURELIA STORY</p>
+    <h2>Food as<br><em>art.</em></h2>
+    <p>Every plate is composed with intention. We bring together modern technique, seasonal ingredients and a warm sense of hospitality to create a dining experience that lingers long after the final course.</p>
+    <a class="text-link" href="#experience">Our philosophy <span>→</span></a>
+  </div>
+</section>
+
+<section class="menu-section" id="menu">
+  <div class="section-top reveal">
+    <div><p class="eyebrow">THE COLLECTION</p><h2>Signature <em>Menu</em></h2></div>
+    <p>Designed to evolve with the season.<br>Choose a chapter of the experience.</p>
+  </div>
+  <div class="menu-tabs">
+    <button class="active" data-cat="all">ALL</button>
+    <button data-cat="starters">STARTERS</button>
+    <button data-cat="mains">MAINS</button>
+    <button data-cat="desserts">DESSERTS</button>
+    <button data-cat="drinks">DRINKS</button>
+  </div>
+  <div class="dish-grid" id="dishGrid"></div>
+</section>
+
+<section class="cinema" id="experience">
+  <div class="cinema-bg"></div>
+  <div class="cinema-content reveal">
+    <p class="eyebrow">THE EXPERIENCE</p>
+    <h2>Slow down.<br><em>Savour more.</em></h2>
+    <p>From the first welcome to the last pour, every detail is designed to feel effortless.</p>
+    <button class="play-btn" onclick="openVideo()">▶ <span>WATCH OUR STORY</span></button>
+  </div>
+  <div class="cinema-caption">A MOMENT WORTH REMEMBERING · 01</div>
+</section>
+
+<section class="private" id="private">
+  <div class="private-copy reveal">
+    <p class="eyebrow">PRIVATE DINING</p>
+    <h2>Your table.<br><em>Your world.</em></h2>
+    <p>Celebrate quietly, gather beautifully, or host an evening made entirely yours. Our private room is available for intimate occasions and curated menus.</p>
+    <button class="gold-btn" onclick="openReservation()">Enquire for Private Dining <span>↗</span></button>
+  </div>
+  <div class="private-visual">
+    <div class="room-photo"></div>
+    <div class="room-card"><small>PRIVATE ROOM</small><strong>UP TO 12 GUESTS</strong><span>Curated menus · dedicated service</span></div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="quote-mark">“</div>
+  <blockquote>Great food should not simply be eaten.<br>It should be remembered.</blockquote>
+  <span>— AURELIA DINING HOUSE</span>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-main reveal">
+    <p class="eyebrow">COME FIND US</p>
+    <h2>Make tonight<br><em>memorable.</em></h2>
+    <p>F-10 Markaz · Islamabad · Pakistan</p>
+    <div class="contact-buttons">
+      <button class="gold-btn" onclick="openReservation()">Reserve a Table <span>↗</span></button>
+      <a class="ghost-btn" target="_blank" href="https://maps.app.goo.gl/RazCNvan2D17c6EP6">Open in Maps</a>
+    </div>
+  </div>
+  <div class="hours">
+    <div><small>DINNER</small><b>6:00 PM — 11:30 PM</b></div>
+    <div><small>RESERVATIONS</small><b>+92 300 000 0000</b></div>
+    <div><small>EMAIL</small><b>hello@aureliadining.com</b></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-brand">AURELIA <small>DINING HOUSE</small></div>
+  <p>© 2026 AURELIA · Luxury Restaurant Experience</p>
+  <div class="footer-links"><a href="#menu">Menu</a><a href="#private">Private Dining</a><a href="#contact">Contact</a></div>
+</footer>
+
+<div class="modal" id="reservation">
+  <div class="modal-card">
+    <button class="close" onclick="closeReservation()">×</button>
+    <p class="eyebrow">TABLE RESERVATION</p>
+    <h2>Reserve your <em>moment.</em></h2>
+    <form onsubmit="submitReservation(event)">
+      <input required placeholder="Full name">
+      <input required type="tel" placeholder="Phone number">
+      <div class="two"><input required type="date"><select required><option value="">Guests</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5 Guests</option><option>6+ Guests</option></select></div>
+      <div class="two"><input required type="time"><select><option>Dinner</option><option>Private Dining</option><option>Celebration</option></select></div>
+      <button class="gold-btn" type="submit">Request Reservation <span>↗</span></button>
+    </form>
+    <small class="modal-note">Demo form — connect your restaurant reservation backend, WhatsApp or email service for production.</small>
+  </div>
+</div>
+
+<div class="video-modal" id="videoModal">
+  <button onclick="closeVideo()">×</button>
+
+  <div class="video-wrapper">
+    <video
+      class="restaurant-video"
+      controls
+      autoplay
+      muted
+      playsinline
+      loop
+    >
+      <source src="vedios/restaurant.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
