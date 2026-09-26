@@ -66,42 +66,74 @@ const dishes = [
 
 
 /* =========================================================
-   MENU
+   DOM ELEMENTS
 ========================================================= */
 
 const grid = document.getElementById("dishGrid");
 
+const videoModal = document.getElementById("videoModal");
+const restaurantVideo = document.getElementById("restaurantVideo");
+
+const reservationModal = document.getElementById("reservation");
+
+const mobileNav = document.getElementById("mobileNav");
+
+const loader = document.getElementById("loader");
+
+const heroImage = document.getElementById("heroImage");
+
+
+/* =========================================================
+   MENU RENDER
+========================================================= */
+
 function render(cat = "all") {
+
   if (!grid) return;
 
   const list =
     cat === "all"
       ? dishes
-      : dishes.filter((x) => x.cat === cat);
+      : dishes.filter((dish) => dish.cat === cat);
+
 
   grid.innerHTML = list
     .map(
-      (d) => `
+      (dish) => `
         <article class="dish">
+
           <div class="dish-img">
             <img
               loading="lazy"
-              src="${d.img}"
-              alt="${d.name}"
+              src="${dish.img}"
+              alt="${dish.name}"
             >
           </div>
 
           <div class="dish-info">
+
             <div>
-              <small>${d.cat.toUpperCase()}</small>
-              <h3>${d.name}</h3>
-              <p>${d.desc}</p>
+
+              <small>
+                ${dish.cat.toUpperCase()}
+              </small>
+
+              <h3>
+                ${dish.name}
+              </h3>
+
+              <p>
+                ${dish.desc}
+              </p>
+
             </div>
 
             <strong class="dish-price">
-              Rs. ${d.price}
+              Rs. ${dish.price}
             </strong>
+
           </div>
+
         </article>
       `
     )
@@ -110,20 +142,33 @@ function render(cat = "all") {
 
 
 /* =========================================================
-   MENU TABS
+   MENU FILTER TABS
 ========================================================= */
 
-document.querySelectorAll(".menu-tabs button").forEach((btn) => {
-  btn.addEventListener("click", () => {
+const menuButtons =
+  document.querySelectorAll(".menu-tabs button");
 
-    document
-      .querySelectorAll(".menu-tabs button")
-      .forEach((x) => x.classList.remove("active"));
 
-    btn.classList.add("active");
+menuButtons.forEach((button) => {
 
-    render(btn.dataset.cat);
+  button.addEventListener("click", () => {
+
+    menuButtons.forEach((btn) => {
+      btn.classList.remove("active");
+    });
+
+
+    button.classList.add("active");
+
+
+    const category =
+      button.dataset.cat || "all";
+
+
+    render(category);
+
   });
+
 });
 
 
@@ -132,11 +177,34 @@ document.querySelectorAll(".menu-tabs button").forEach((btn) => {
 ========================================================= */
 
 function toggleMobile() {
-  const mobileNav = document.getElementById("mobileNav");
 
   if (!mobileNav) return;
 
   mobileNav.classList.toggle("open");
+
+}
+
+
+/*
+  Close mobile menu when clicking a navigation link
+*/
+
+if (mobileNav) {
+
+  const mobileLinks =
+    mobileNav.querySelectorAll("a");
+
+
+  mobileLinks.forEach((link) => {
+
+    link.addEventListener("click", () => {
+
+      mobileNav.classList.remove("open");
+
+    });
+
+  });
+
 }
 
 
@@ -145,150 +213,303 @@ function toggleMobile() {
 ========================================================= */
 
 function openReservation() {
-  const reservation = document.getElementById("reservation");
 
-  if (!reservation) return;
+  if (!reservationModal) {
+    console.error("Reservation modal not found.");
+    return;
+  }
 
-  reservation.classList.add("open");
+
+  reservationModal.classList.add("open");
+
   document.body.style.overflow = "hidden";
+
 }
 
 
 function closeReservation() {
-  const reservation = document.getElementById("reservation");
 
-  if (!reservation) return;
+  if (!reservationModal) return;
 
-  reservation.classList.remove("open");
+
+  reservationModal.classList.remove("open");
+
   document.body.style.overflow = "";
-}
 
-
-function submitReservation(e) {
-  e.preventDefault();
-
-  alert(
-    "Reservation request received in demo mode. Connect your booking backend/WhatsApp/email to make this live."
-  );
-
-  closeReservation();
 }
 
 
 /* =========================================================
-   RESTAURANT VIDEO MODAL
+   RESERVATION FORM
 ========================================================= */
 
-const videoModal = document.getElementById("videoModal");
-const restaurantVideo = document.getElementById("restaurantVideo");
+function submitReservation(event) {
 
+  if (event) {
+    event.preventDefault();
+  }
+
+
+  alert(
+    "Reservation request received in demo mode. Connect your booking backend, WhatsApp or email to make this live."
+  );
+
+
+  closeReservation();
+
+}
+
+
+/* =========================================================
+   RESTAURANT VIDEO
+   MOBILE + DESKTOP COMPATIBLE
+========================================================= */
 
 function openVideo() {
 
+  /*
+    Make sure modal exists
+  */
+
   if (!videoModal) {
-    console.error("Video modal not found.");
+
+    console.error(
+      "AURELIA: videoModal element not found."
+    );
+
     return;
   }
+
+
+  /*
+    Open modal
+  */
 
   videoModal.classList.add("open");
 
   document.body.style.overflow = "hidden";
 
 
-  if (restaurantVideo) {
+  /*
+    Make sure video exists
+  */
 
-    /*
-      Important for mobile browsers.
-      Muted + playsinline allows playback without
-      requiring normal autoplay permission.
-    */
+  if (!restaurantVideo) {
 
-    restaurantVideo.muted = true;
-    restaurantVideo.setAttribute("muted", "");
-    restaurantVideo.setAttribute("playsinline", "");
-    restaurantVideo.setAttribute("webkit-playsinline", "");
+    console.error(
+      "AURELIA: restaurantVideo element not found."
+    );
 
-    /*
-      Start from beginning every time modal opens.
-    */
+    return;
+  }
 
-    try {
-      restaurantVideo.currentTime = 0;
-    } catch (error) {
-      console.log("Could not reset video:", error);
+
+  /*
+    Mobile browser compatibility
+  */
+
+  restaurantVideo.muted = true;
+
+  restaurantVideo.defaultMuted = true;
+
+  restaurantVideo.setAttribute(
+    "muted",
+    ""
+  );
+
+  restaurantVideo.setAttribute(
+    "playsinline",
+    ""
+  );
+
+  restaurantVideo.setAttribute(
+    "webkit-playsinline",
+    "" 
+  );
+
+
+  /*
+    Reset video
+  */
+
+  try {
+
+    restaurantVideo.pause();
+
+    restaurantVideo.currentTime = 0;
+
+  } catch (error) {
+
+    console.log(
+      "Could not reset video:",
+      error
+    );
+
+  }
+
+
+  /*
+    Reload video source
+  */
+
+  try {
+
+    restaurantVideo.load();
+
+  } catch (error) {
+
+    console.log(
+      "Could not load video:",
+      error
+    );
+
+  }
+
+
+  /*
+    Start playback directly from the
+    user's click interaction.
+  */
+
+  const playVideo = () => {
+
+    const playPromise =
+      restaurantVideo.play();
+
+
+    if (
+      playPromise !== undefined
+    ) {
+
+      playPromise
+        .then(() => {
+
+          console.log(
+            "AURELIA restaurant video started."
+          );
+
+        })
+        .catch((error) => {
+
+          /*
+            Mobile browsers can sometimes block
+            autoplay. Controls remain available,
+            so user can press Play manually.
+          */
+
+          console.log(
+            "AURELIA video autoplay blocked:",
+            error
+          );
+
+        });
+
     }
 
+  };
 
-    /*
-      Give the browser a moment to render the modal,
-      then start playback.
-    */
 
-    setTimeout(() => {
+  /*
+    Small delay only for rendering the modal.
+  */
 
-      const playPromise = restaurantVideo.play();
+  requestAnimationFrame(() => {
 
-      if (playPromise !== undefined) {
+    playVideo();
 
-        playPromise
-          .then(() => {
-            console.log("AURELIA video started successfully.");
-          })
-          .catch((error) => {
+  });
 
-            /*
-              Some mobile browsers may still block
-              automatic playback. The controls remain
-              available so the user can tap Play.
-            */
-
-            console.log(
-              "Mobile autoplay was blocked:",
-              error
-            );
-          });
-      }
-
-    }, 100);
-  }
 }
 
+
+/* =========================================================
+   CLOSE VIDEO
+========================================================= */
 
 function closeVideo() {
 
   if (restaurantVideo) {
 
-    restaurantVideo.pause();
-
     try {
+
+      restaurantVideo.pause();
+
       restaurantVideo.currentTime = 0;
+
     } catch (error) {
-      console.log("Could not reset video:", error);
+
+      console.log(
+        "Could not stop video:",
+        error
+      );
+
     }
+
   }
 
 
   if (videoModal) {
+
     videoModal.classList.remove("open");
+
   }
 
+
   document.body.style.overflow = "";
+
 }
 
 
 /* =========================================================
-   CLOSE VIDEO WHEN CLICKING OUTSIDE
+   CLOSE VIDEO BY CLICKING BACKDROP
 ========================================================= */
 
 if (videoModal) {
 
-  videoModal.addEventListener("click", (e) => {
+  videoModal.addEventListener(
+    "click",
+    (event) => {
 
-    if (e.target === videoModal) {
-      closeVideo();
+      /*
+        Only close if user clicked
+        the dark background itself.
+      */
+
+      if (
+        event.target === videoModal
+      ) {
+
+        closeVideo();
+
+      }
+
     }
+  );
 
-  });
+}
+
+
+/* =========================================================
+   RESERVATION BACKDROP
+========================================================= */
+
+if (reservationModal) {
+
+  reservationModal.addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        event.target === reservationModal
+      ) {
+
+        closeReservation();
+
+      }
+
+    }
+  );
+
 }
 
 
@@ -296,97 +517,312 @@ if (videoModal) {
    ESCAPE KEY
 ========================================================= */
 
-document.addEventListener("keydown", (e) => {
+document.addEventListener(
+  "keydown",
+  (event) => {
 
-  if (e.key === "Escape") {
+    if (event.key !== "Escape") {
+      return;
+    }
+
+
+    /*
+      Close video
+    */
 
     if (
       videoModal &&
       videoModal.classList.contains("open")
     ) {
+
       closeVideo();
+
     }
 
-    const reservation =
-      document.getElementById("reservation");
+
+    /*
+      Close reservation
+    */
 
     if (
-      reservation &&
-      reservation.classList.contains("open")
+      reservationModal &&
+      reservationModal.classList.contains("open")
     ) {
-      closeReservation();
-    }
-  }
 
-});
+      closeReservation();
+
+    }
+
+
+    /*
+      Close mobile navigation
+    */
+
+    if (
+      mobileNav &&
+      mobileNav.classList.contains("open")
+    ) {
+
+      mobileNav.classList.remove("open");
+
+    }
+
+  }
+);
 
 
 /* =========================================================
-   LOADER
+   VIDEO ERROR DETECTION
 ========================================================= */
 
-window.addEventListener("load", () => {
+if (restaurantVideo) {
 
-  setTimeout(() => {
+  restaurantVideo.addEventListener(
+    "error",
+    () => {
 
-    const loader = document.getElementById("loader");
+      console.error(
+        "AURELIA video error:",
+        restaurantVideo.error
+      );
 
-    if (loader) {
-      loader.style.display = "none";
     }
+  );
 
-  }, 1500);
 
-});
+  restaurantVideo.addEventListener(
+    "loadedmetadata",
+    () => {
+
+      console.log(
+        "AURELIA video metadata loaded."
+      );
+
+    }
+  );
+
+
+  restaurantVideo.addEventListener(
+    "canplay",
+    () => {
+
+      console.log(
+        "AURELIA video is ready to play."
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   PAGE LOADER
+========================================================= */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    setTimeout(
+      () => {
+
+        if (loader) {
+
+          loader.style.opacity = "0";
+
+
+          setTimeout(
+            () => {
+
+              loader.style.display = "none";
+
+            },
+            400
+          );
+
+        }
+
+      },
+      1500
+    );
+
+  }
+);
 
 
 /* =========================================================
    SCROLL REVEAL
 ========================================================= */
 
-const observer = new IntersectionObserver(
-  (entries) => {
+const revealElements =
+  document.querySelectorAll(".reveal");
 
-    entries.forEach((e) => {
 
-      if (e.isIntersecting) {
-        e.target.classList.add("visible");
+if (
+  "IntersectionObserver" in window
+) {
+
+  const observer =
+    new IntersectionObserver(
+      (entries) => {
+
+        entries.forEach((entry) => {
+
+          if (
+            entry.isIntersecting
+          ) {
+
+            entry.target.classList.add(
+              "visible"
+            );
+
+            /*
+              Stop observing once visible
+              for better performance.
+            */
+
+            observer.unobserve(
+              entry.target
+            );
+
+          }
+
+        });
+
+      },
+      {
+        threshold: 0.15
       }
-
-    });
-
-  },
-  {
-    threshold: 0.15
-  }
-);
+    );
 
 
-document
-  .querySelectorAll(".reveal")
-  .forEach((el) => observer.observe(el));
+  revealElements.forEach((element) => {
+
+    observer.observe(element);
+
+  });
+
+} else {
+
+  /*
+    Fallback for older browsers
+  */
+
+  revealElements.forEach((element) => {
+
+    element.classList.add(
+      "visible"
+    );
+
+  });
+
+}
 
 
 /* =========================================================
    HERO PARALLAX
 ========================================================= */
 
-window.addEventListener("scroll", () => {
+let ticking = false;
 
-  const heroImage = document.getElementById("heroImage");
 
-  if (!heroImage) return;
+function updateHeroParallax() {
 
-  const y = window.scrollY;
+  if (!heroImage) {
+    ticking = false;
+    return;
+  }
+
+
+  /*
+    Disable heavy parallax on small screens.
+    This prevents unnecessary mobile performance load.
+  */
+
+  if (window.innerWidth <= 768) {
+
+    heroImage.style.transform =
+      "scale(1.02)";
+
+    ticking = false;
+
+    return;
+
+  }
+
+
+  const scrollPosition =
+    window.scrollY || window.pageYOffset;
+
 
   heroImage.style.transform =
-    `scale(1.05) translateY(${y * 0.035}px)`;
+    `scale(1.05) translateY(${scrollPosition * 0.035}px)`;
 
-});
+
+  ticking = false;
+
+}
+
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    if (!ticking) {
+
+      window.requestAnimationFrame(
+        updateHeroParallax
+      );
+
+      ticking = true;
+
+    }
+
+  },
+  {
+    passive: true
+  }
+);
 
 
 /* =========================================================
-   INITIAL MENU
+   RESIZE
+========================================================= */
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    /*
+      If desktop -> mobile while menu is open,
+      keep navigation state clean.
+    */
+
+    if (
+      window.innerWidth > 900 &&
+      mobileNav
+    ) {
+
+      mobileNav.classList.remove(
+        "open"
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZE MENU
 ========================================================= */
 
 render();
+
+
+/* =========================================================
+   INITIAL HERO POSITION
+========================================================= */
+
+updateHeroParallax();
